@@ -1,0 +1,112 @@
+services:
+  friends:
+    container_name: friends
+    build: 
+      context: ./friends-related-services
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./friends-related-services/.env
+    networks:
+      - docker-network
+    restart: on-failure
+    depends_on:
+      - mysql
+      - mongodb
+
+  messages:
+    container_name: messages
+    build: 
+      context: ./message-related-services
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5003"
+    env_file:
+      - ./message-related-services/.env
+    networks:
+      - docker-network
+    restart: on-failure
+    depends_on:
+      - mysql
+      - mongodb
+
+  users:
+    container_name: users
+    build: 
+      context: ./user-related-services
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./user-related-services/.env
+    networks:
+      - docker-network
+    restart: on-failure
+    depends_on:
+      - mysql
+      - mongodb
+
+  gateway:
+    container_name: gateway
+    build: 
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./gateway/.env
+    networks:
+      - docker-network
+    restart: on-failure
+    depends_on:
+      - users
+      - friends
+      - messages
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.4
+    ports:
+      - "27017:27017"
+    networks:
+      - docker-network
+    healthcheck:
+      test: ["CMD", "mongo", "--quiet", "--eval", "db.runCommand({ ping: 1 }).ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: on-failure
+    volumes:
+      - mongodb-vol:/data/db
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: chat_app
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql-vol:/var/lib/mysql
+      - ./table_init.sql:/docker-entrypoint-initdb.d/table_init.sql  
+    networks:
+      - docker-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+networks:
+  docker-network:
+    driver: bridge
+
+volumes:
+  mongodb-vol:
+    driver: local
+  mysql-vol:
+    driver: local

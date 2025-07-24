@@ -1,4 +1,4 @@
-const { mysqlPool } = require('../../user-related-services/db/connectDB');
+const { mysqlPool } = require('../db/connectDB');
 const Conversation = require('../models/ConversationModel');
 const mongoose = require('mongoose')
 const cloudinary = require('../config/cloudinary')

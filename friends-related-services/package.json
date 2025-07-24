@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
@@ -17,6 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "mysql2": "^3.14.1",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "chat-shared-schemas": "^1.0.0"
   }
 }
