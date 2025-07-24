@@ -53,9 +53,9 @@ const proxyRequest = async (req, res, target) => {
 };
 
 // Proxy to microservices
-app.use('/users', (req, res) => proxyRequest(req, res, 'http://localhost:5001'));
-app.use('/friends', (req, res) => proxyRequest(req, res, 'http://localhost:5002'));
-app.use('/messages', (req, res) => proxyRequest(req, res, 'http://localhost:5003'));
+app.use('/users', (req, res) => proxyRequest(req, res, 'http://users:5001'));
+app.use('/friends', (req, res) => proxyRequest(req, res, 'http://friends:5002'));
+app.use('/messages', (req, res) => proxyRequest(req, res, 'http://messages:5003'));
 
 // Health check
 app.get('/', (req, res) => {

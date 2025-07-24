@@ -1,4 +1,4 @@
-const { mysqlPool } = require('../../user-related-services/db/connectDB');
+const { mysqlPool } = require('../db/connectDB');
 const Conversation = require('../models/ConversationModel');
 
 const Message = require('../models/MessageModel'); // Import the Message model
