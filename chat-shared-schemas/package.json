@@ -9,6 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "private":false,
   "type": "commonjs",
   "dependencies": {
     "mongoose": "^8.15.1"

@@ -4,6 +4,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import MessageBubble from "../../../components/MessageBubbles";
+import { ArrowLeft } from "lucide-react";
+import Sidebar from "@/app/components/layout/Sidebar";
 
 let socket;
 
@@ -14,6 +16,8 @@ export default function ConversationPage() {
   const [userUuid, setUserUuid] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSidebar, setShowSidebar] = useState(false);
+
   const messagesEndRef = useRef(null);
 
   const router = useRouter();
@@ -123,7 +127,6 @@ export default function ConversationPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-[#111827] transition-colors duration-200">
-
       {/* Header */}
       <header
         onClick={() => {
@@ -140,6 +143,19 @@ export default function ConversationPage() {
         }}
         className="cursor-pointer sticky top-0 z-30 bg-white/80 dark:bg-[#1f2937]/80 backdrop-blur border-b border-gray-200 dark:border-gray-700 px-4 py-3 shadow-sm flex items-center gap-4"
       >
+        {/* Back Arrow - Prevents trigger of onClick above */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            router.back();
+          }}
+          className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+        >
+          <ArrowLeft className="text-gray-700 dark:text-gray-200" size={20} />
+        </button>
+
+        
+
         <img
           src={getImage() || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
           alt="avatar"
@@ -156,12 +172,12 @@ export default function ConversationPage() {
           </p>
         </div>
 
-        {/* Search Input */}
+        {/* Search Input stays as-is */}
         <div className="relative hidden sm:block">
           <input
             type="text"
             value={searchTerm}
-            onClick={(e) => e.stopPropagation()} // prevent routing when clicking inside input
+            onClick={(e) => e.stopPropagation()}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search messages"
             className="pl-10 pr-4 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-[#1f2937] text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -181,6 +197,7 @@ export default function ConversationPage() {
           </svg>
         </div>
       </header>
+
 
 
       {/* Messages */}

@@ -376,7 +376,7 @@ export default function GroupDescriptionPage() {
           <div className="w-full bg-gray-50 dark:bg-[#1f2937] p-6 rounded-xl shadow-lg relative">
             <div className="relative w-fit mx-auto">
               <img
-                src={group.groupPicture || "/default-group.png"}
+                src={group.groupPicture || "/vercel.svg"}
                 alt="group"
                 className="w-32 h-32 rounded-full border-4 border-indigo-500 object-cover shadow-md"
               />
